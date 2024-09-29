@@ -324,7 +324,7 @@ const TWA_ProWebtoons = {
 
             var retry=1;
             // fetch(`https://raw.githubusercontent.com/prowebtoons-thief/${this.title}/main/dtb.webtoon.id.${this.title}.json`).then(r=>r.ok?r.json():Promise.reject(`HTTP error! status: ${r.status}`)).then(j=>this.epsInfo=j).catch(e=>console.error('Failed to fetch JSON:',e));
-            fetch('https://raw.githubusercontent.com/prowebtoons-thief/{0}/main/dtb.webtoon.id.{0}.json'.format(App.titleNa)).then(response=>response.json()).then(json=>App.epsInfo=json);
+            fetch('https://raw.githubusercontent.com/prowebtoons-thief/{0}/main/dtb.webtoon.id.{0}.json'.format(this.title)).then(response=>response.json()).then(json=>this.epsInfo=json);
             // fetch(`./${this.title}.json`).then(r=>r.json()).then(j=>{this.epsInfo=j}).catch(e=>console.error('Failed to fetch JSON:',e));
 
             const get_epsInfo=()=>{
