@@ -37,8 +37,8 @@ const TWA_ProWebtoons = {
         last_view:null
     },
 
-    // full_data_src:"https://raw.githubusercontent.com/prowebtoons-thief/{0}/main/{1}/{2}.jpg",
-    full_data_src:"{0}/{2}",
+    full_data_src:"https://raw.githubusercontent.com/prowebtoons-thief/{0}/main/{1}/{2}.jpg",
+    // full_data_src:"{0}/{2}",
     lastScrollY:window.pageYOffset,
     scrolledStart:false,
 
