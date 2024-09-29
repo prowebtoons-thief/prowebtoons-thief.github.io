@@ -295,7 +295,7 @@ const TWA_ProWebtoons = {
         if(!this.title){
             var i = Math.floor(Math.random()*5);
             var div = document.createElement("div");
-            div.style = "position:relative;width:100%;height:100%;background-image:url(./.static/media/{0}.jpg);background-position:center;background-size:contain;background-repeat:no-repeat;left:50%;transform:translateX(-50%)".format(i);
+            div.style = "position:relative;width:100%;height:100%;background-image:url(./static/media/{0}.jpg);background-position:center;background-size:contain;background-repeat:no-repeat;left:50%;transform:translateX(-50%)".format(i);
             this.content.e[0].insertBefore(div, this.content.e[0].firstChild);
 
             div.ontouchstart = ()=>audio.paused?audio.play():"";
@@ -303,12 +303,12 @@ const TWA_ProWebtoons = {
             div.ondblclick = ()=>audio.played?audio.pause():"";
 
             var div = document.createElement("div");
-            div.style = "position:absolute;width:100%;height:100vh;background-image:url(./.static/media/{0}.jpg);background-position:center;background-size:cover;filter:blur(3px);opacity:.666".format(i);
+            div.style = "position:absolute;width:100%;height:100vh;background-image:url(./static/media/{0}.jpg);background-position:center;background-size:cover;filter:blur(3px);opacity:.666".format(i);
             this.content.e[0].insertBefore(div, this.content.e[0].firstChild);
 
             var audio = document.createElement("audio");
             audio.setAttribute("autoplay",true);
-            audio.setAttribute("src","./.static/media/{0}.m4a".format(i));
+            audio.setAttribute("src","./static/media/{0}.m4a".format(i));
             this.content.e[0].insertBefore(audio, this.content.e[0].firstChild);
 
             audio.addEventListener("timeupdate", function() {
