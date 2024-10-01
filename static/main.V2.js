@@ -1,24 +1,33 @@
 var mouseTimer=null,cursorVisible=true;document.onmousemove=()=>{if(mouseTimer){window.clearTimeout(mouseTimer)};if(!cursorVisible){document.getElementsByTagName("html")[0].style.cursor="default";cursorVisible=true};mouseTimer=window.setTimeout(()=>{mouseTimer=null;document.getElementsByTagName("html")[0].style.cursor="none";cursorVisible=false},3E+3)};
 document.onkeydown=(e)=>{if(e.ctrlKey&&e.shiftKey&&["C","J","I"].includes(e.key.toUpperCase())){return(false)};if(e.ctrlKey&&["C","S","U"].includes(e.key.toUpperCase())){return(false)}};
 if(!String.prototype.format){String.prototype.format=function(){var args=arguments;return(this.replace(/{(\d+)}/g,function(match,number){return(typeof args[number]!="undefined"?args[number]:match)}))}};
-function $(s){return new Elements(document.querySelectorAll(s))}function Elements(e){this.e=e,this.l={}}
+function $(s){
+    if (t=(s.match(/<.*>/g)||[""])[0].slice(1, -1))s=document.createElement(t);
+    return new Elements((typeof s==='object'?s:document.querySelectorAll(s)))
+}
+function Elements(e){
+    this.e=(e.length>1)?e:(e[0]||e);
+    this.l={}
+}
 Elements.prototype={
-    addClass:function(c){this.e[0].classList.add(c);return this},
-    append:function(c){this.e[0].appendChild(c);return this},
-    attr:function(n,v) {if(v===undefined)return (this.e[0]||this.e).getAttribute(n);else (this.e[0]||this.e).setAttribute(n,v);return this},
-    css:function(p,v){if(v){this.e[0].style[p]=v;return this}return this.e[0].style[p]},
-    find:function(s){const e=this.e[0].querySelectorAll(s);return new Elements(e)},
+    addClass:function(c){this.e.classList.add(c);return this},
+    removeClass:function(c){this.e.classList.remove(c);return this},
+    style:function(s){if(s){this.e.style=s;return this}return this.e.style},
+    html:function(h){if(h){this.e.innerHTML=h;return this}return this.e.innerHTML},
+    append:function(c){this.e.appendChild(c);return this},
+    remove:function(c){this.e.removeChild(c);return this},
+    attr:function(n,v) {if(v===null)this.e.removeAttribute(n);else if(v===undefined)return this.e.getAttribute(n);else this.e.setAttribute(n,v);return this},
+    css:function(p,v){if(v){this.e.style[p]=v;return this}return this.e.style[p]},
     get:function(i){return new Elements(this.e[i])},
-    hide:function(){this.e[0].style.display="none";return this},
-    html:function(h){if(h){this.e[0].innerHTML=h;return this}return this.e[0].innerHTML},
-    insertBefore:function(s){const e=document.querySelector(s);e.parentNode.insertBefore(this.e[0],e);return this},
-    off:function(e,c){this.e[0].removeEventListener(e,c);return this},
-    on:function(e,c,t=3000){if(this.l[e])this.off(e,this.l[e]);this.l[e]=c;if(e==="longpress"){var o,cancel=function(){clearTimeout(o)};this.e[0].addEventListener("touchstart",function(){o=setTimeout(function(){o=null;c()},t)});this.e[0].addEventListener("mousedown",function(){this.dispatchEvent(new Event("touchstart"))});this.e[0].addEventListener("touchend",cancel);this.e[0].addEventListener("mouseup",cancel);this.e[0].addEventListener("touchmove",cancel);this.e[0].addEventListener("mouseleave",cancel)}else{this.e[0].addEventListener(e,c)}return this},
-    removeClass:function(c){this.e[0].classList.remove(c);return this},show:function(){this.e[0].style.display="block";return this},
-    style:function(s){if(s){this.e[0].style=s;return this}return this.e[0].style},
-    toggle:function(){this.e[0].style.display=this.e[0].style.display=="none"?"block":"none";return this},
-    width:function(w){if(w)this.e[0].style.width=`${w}px`;return this.e[0].offsetWidth},
-    height:function(h){if(h)this.e[0].style.height=`${h}px`;return this.e[0].offsetHeight}
+    find:function(s){const e=this.e.querySelectorAll(s);return new Elements(e)},
+    show:function(){this.e.style.display="block";return this},
+    hide:function(){this.e.style.display="none";return this},
+    toggle:function(){this.e.style.display=this.e.style.display=="none"?"block":"none";return this},
+    insertBefore:function(s){const e=document.querySelector(s);e.parentNode.insertBefore(this.e,e);return this},
+    off:function(e,c){this.e.removeEventListener(e,c);return this},
+    on:function(e,c,t=3000){if(this.l[e])this.off(e,this.l[e]);this.l[e]=c;if(e==="longpress"){var o,cancel=()=>{clearTimeout(o)};this.e.ontouchstart=()=>{o=setTimeout(function(){o=null;c()},t)};this.e.onmousedown=()=>{o=setTimeout(function(){o=null;c()},t)};this.e.ontouchend=()=>{cancel()};this.e.onmouseup=()=>{cancel()};this.e.ontouchmove=()=>{cancel()};this.e.onmouseleave=()=>{cancel()}}else{this.e.addEventListener(e,c)}return this},
+    width:function(w){if(w)this.e.style.width=`${w}px`;return this.e.offsetWidth},
+    height:function(h){if(h)this.e.style.height=`${h}px`;return this.e.offsetHeight}
 };
 $.cookie=function(n,v,o){if(typeof v!="undefined"){o=o||{};if(v===null){v="";o.expires=-1}var e="";if(o.expires&&(typeof o.expires=="number"||o.expires.toUTCString)){var d;if(typeof o.expires=="number"){d=new Date();d.setHours(23,59,59);d.setDate(d.getDate()+o.expires)}else{d=o.expires}e=";expires="+d.toUTCString()}document.cookie=[n,"=",encodeURIComponent(v),e,";path="+(o.path||"/"),(o.domain?";domain="+o.domain:""),(o.secure?";secure":"")].join("")}else{var r=new RegExp("(?:; )?"+n+"=([^;]*);?");if(r.test(document.cookie)){return decodeURIComponent(RegExp["$1"])}return null}};
 $.getSearchObject=function(){if(location.search==="")return{};var o={};location.search.substr(1).split("&").forEach(pair=>{var[k,v]=pair.split("=");k=decodeURIComponent(k),v=decodeURIComponent(v)||null;if(o[k]){if(!(o[k]instanceof Array))o[k]=[o[k]];o[k].push(v)}else o[k]=v});return o};
@@ -84,15 +93,17 @@ const TWA_ProWebtoons = {
         }
     },
     referer:function(eps){
-        if(!Object.keys(this.epsInfo.epsInfo).includes(eps)){this.description.show();return}
-        document.title="#{0} .... Chapter {0}".format(eps.padStart(3,0));
+        // console.log(`referer ${eps}`)
+
+        if(!Object.keys(this.epsInfo.epsInfo).includes(eps)){$('#dashboard').show();return}
+        document.title=`#${eps} .... ${this.epsInfo.epsInfo[eps].title}`;
         if(eps!==this.client.last_view){
             this.client.last_view=eps;
             this.client.qwe.thumb_img=0;
             this.client.qwe.scrollY=0;
             window.scrollTo(0,0)
         };
-        this.description.hide();
+        $('#dashboard').hide();
         $('#fixed-tool').show();
         this.imageList.show();
         localStorage.setItem(`qwe.${this.title}`, JSON.stringify(this.client.qwe))
@@ -110,65 +121,57 @@ const TWA_ProWebtoons = {
             else var data_src=this.full_data_src.format(this.title,this.getChapter(),imgTag.attr("data-fname"));
             this.client.qwe.thumb_img = parseInt(imgTag.attr("data-sortOrder"));
             var isrc=imgTag.attr("src");
-            if (isrc&&isrc!==data_src&&window.scrollY>=imgTag.e.offsetTop&&window.scrollY<=imgTag.e.offsetTop+imgTag.e.offsetHeight) {this.reloadImg(imgTag)}
-            else if (!isrc) {imgTag.attr("src",data_src)};
+            if (isrc&&isrc!==data_src&&window.scrollY>=imgTag.e.offsetTop&&window.scrollY<=imgTag.e.offsetTop+imgTag.e.offsetHeight) this.reloadImg(index);
+            else if (!isrc) imgTag.attr("src", data_src);
         }
     },
-    setdescription:function(){
-        window.onscroll=undefined;
-        if (this.description.html())this.description.html('');
+    onImgError:function(index){
+        // console.log(`onImgError ${JSON.stringify(index)}`)
+        var imgTag = $("ul#imageList li img").get(index)
+        imgTag.attr("src", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVQYGWMAAQAABQAB8C9sxAAAAABJRU5ErkJggg==");
+        imgTag.attr("ondblclick", `TWA_ProWebtoons.reloadImg(${index});`);
+        imgTag.addClass("error");
+        imgTag.on('longpress', ()=>{
+            if (imgTag.attr("data-imglink")) {window.open(imgTag.attr("data-imglink"));}
+            else window.open(this.full_data_src.format(this.titleNa,this.getChapter(),imgTag.attr("data-fname")));
+        }, 5E+3)
+    },
+    reloadImg:function(index){
+        // console.log(`reloadImg ${JSON.stringify(index)}`)
+        var imgTag = $("ul#imageList li img").get(index)
+        if (imgTag.attr("data-imglink")) var data_src=imgTag.attr("data-imglink");
+        else var data_src=this.full_data_src.format(this.title,this.getChapter(),imgTag.attr("data-fname"));
+        imgTag.attr("src", data_src);
+        imgTag.attr("ondblclick", null);
+        imgTag.removeClass("error")
+    },
+    setDashboard:function(){
+        window.onscroll = function() {updateProgress()}
 
-        hr=()=>{var hr=document.createElement("hr");hr.setAttribute("style","margin:4px 12px;border-bottom:solid 2px #adadad88;");return(hr)};
-        this.description.append(hr())
-        this.description.append(hr())
-        this.description.append(hr())
-        if (this.epsInfo.description) {
-            var p=document.createElement("p");
-            p.innerHTML=this.epsInfo.description;
-            this.description.append(p);
-            this.description.append(hr())
-            this.description.append(hr())
-        }
+        var genre = this.epsInfo.genre, tag_genre = $('#dashboard .info .genre');
+        tag_genre.html(genre);tag_genre.addClass(`g_${genre.toLocaleLowerCase()}`);
 
-        var div=document.createElement("div"),
-            ul=document.createElement("ul");
-        ul.setAttribute("id","bxcl");
+        $('#dashboard .info .title').html(this.epsInfo.title);
+        $('#dashboard .info .summary').html(this.epsInfo.description.replaceAll("\n", "<br>"));
 
+        var ul = $("<ul>");
         Object.keys(this.epsInfo.epsInfo).sort().reverse().forEach(eps=>{
-            var li=document.createElement("li"),
-                div=document.createElement("div");
-            div.setAttribute("class","bxch");
-            if(this.client.viewed&&this.client.viewed.includes(eps)){div.classList.add("viewed")};
-            div.setAttribute("onclick","TWA_ProWebtoons.referer('{0}')".format(eps));
-            div.setAttribute("onmouseover","this.getElementsByTagName('span')[0].classList.add('hover')");
-            div.setAttribute("onmouseleave","this.getElementsByTagName('span')[0].classList.remove('hover')");
-            var a=document.createElement("a"),
-                sp=document.createElement("span");
-            sp.setAttribute("class","epsTitle");
-            if(eps==this.client.last_view){sp.classList.add("view")};
-            sp.innerHTML="Chapter {0}".format(eps);
-            a.appendChild(sp);
-            var sp=document.createElement("span");
-            sp.setAttribute("class","epsDate");
-            sp.innerHTML=this.epsInfo.epsInfo[eps].date;
-            a.appendChild(sp);
-            div.appendChild(a);
-            li.appendChild(div);
-            ul.appendChild(li)
-        });
-        this.description.append(ul);
+            var a = $("<div>").attr('title', this.epsInfo.epsInfo[eps].title);
+            if(this.client.viewed&&this.client.viewed.includes(eps)) a.addClass("visited");
+            a.attr("onclick", `TWA_ProWebtoons.referer("${eps}")`);
 
-        var b=document.createElement("b");
-        b.setAttribute("style","padding:1px 12px;");
-        this.description.append(b);
-        this.description.append(hr());
-        this.description.append(hr());
+            a.append($("<span>").addClass('chtitle').html(this.epsInfo.epsInfo[eps].title).e)
+            a.append($("<span>").addClass('date').html(this.epsInfo.epsInfo[eps].date||" ").e)
+            a.append($("<span>").addClass('tx').html(`#${parseInt(eps)}`).e)
+            ul.append($("<li>").attr("data-episode-no", parseInt(eps)).append(a.e).e)
+        });
+        $('#dashboard .detail_lst').html(" ")
+        $('#dashboard .detail_lst').append(ul.e)
 
         $('#fixed-tool').hide();
         this.imageList.hide();
-        this.description.show();
+        $('#dashboard').show()
         window.scrollTo(0,0);
-        window.onscroll = function() {updateProgress()}
     },
     load_content:function(episode){
         this.getChapter(episode);
@@ -191,12 +194,12 @@ const TWA_ProWebtoons = {
             })
         }else this.to_Next.hide();
 
-        var imageList=$("ul#imageList").e[0].getElementsByTagName("li");
+        var imageList=$("ul#imageList").e.getElementsByTagName("li");
         if (imageList.length) Array.from(imageList).forEach(elem=>{elem.remove()});
         for (i=0;i<this.epsInfo.epsInfo[episode].imgInfo.length;i++) {
             var imgI = this.epsInfo.epsInfo[episode].imgInfo[i];
             var img_ctn = document.createElement("img");
-            img_ctn.setAttribute("data-sortOrder","{0}".format(i+1));
+            img_ctn.setAttribute("data-sortOrder", `${i+1}`);
             if (imgI.height>0) {
                 img_ctn.width = imgI.width-2;
                 img_ctn.height = (imgI.height *(window.innerWidth/imgI.width))
@@ -205,7 +208,7 @@ const TWA_ProWebtoons = {
 
             if (imgI.fname) img_ctn.setAttribute("data-fname", imgI.fname);
             else if (imgI.link) img_ctn.setAttribute("data-imglink", imgI.link);
-            img_ctn.setAttribute("onerror","TWA_ProWebtoons.onImgError(this);");
+            img_ctn.setAttribute("onerror", `TWA_ProWebtoons.onImgError(${i});`);
             img_ctn.setAttribute("oncontextmenu","return false;");
             var li_img=document.createElement("li");
             li_img.setAttribute("onclick","TWA_ProWebtoons.fixedTool();");
@@ -253,7 +256,6 @@ const TWA_ProWebtoons = {
         this.to_Next = this.footer_bar.find('#to-Next'),
         this.opt_episode = this.footer_bar.find('#opt-Episode'),
         this.content = $("section#content"),
-        this.description = $("div#description"),
         this.imageList = $("ul#imageList");
 
         this.scrolling = false;
@@ -296,7 +298,7 @@ const TWA_ProWebtoons = {
             var i = Math.floor(Math.random()*5);
             var div = document.createElement("div");
             div.style = "position:relative;width:100%;height:100%;background-image:url(./static/media/{0}.jpg);background-position:center;background-size:contain;background-repeat:no-repeat;left:50%;transform:translateX(-50%)".format(i);
-            this.content.e[0].insertBefore(div, this.content.e[0].firstChild);
+            this.content.e.insertBefore(div, this.content.e.firstChild);
 
             div.ontouchstart = ()=>audio.paused?audio.play():"";
             div.onmousedown = ()=>audio.paused?audio.play():"";
@@ -304,12 +306,12 @@ const TWA_ProWebtoons = {
 
             var div = document.createElement("div");
             div.style = "position:absolute;width:100%;height:100vh;background-image:url(./static/media/{0}.jpg);background-position:center;background-size:cover;filter:blur(3px);opacity:.666".format(i);
-            this.content.e[0].insertBefore(div, this.content.e[0].firstChild);
+            this.content.e.insertBefore(div, this.content.e.firstChild);
 
             var audio = document.createElement("audio");
             audio.setAttribute("autoplay",true);
             audio.setAttribute("src","./static/media/{0}.m4a".format(i));
-            this.content.e[0].insertBefore(audio, this.content.e[0].firstChild);
+            this.content.e.insertBefore(audio, this.content.e.firstChild);
 
             audio.addEventListener("timeupdate", function() {
                 if (audio.ended) {window.location.reload()}
@@ -323,13 +325,12 @@ const TWA_ProWebtoons = {
             this.client.last_view = localStorage[`last_view.${this.title}`]||'';
 
             var retry=1;
-            // fetch(`https://raw.githubusercontent.com/prowebtoons-thief/${this.title}/main/dtb.webtoon.id.${this.title}.json`).then(r=>r.ok?r.json():Promise.reject(`HTTP error! status: ${r.status}`)).then(j=>this.epsInfo=j).catch(e=>console.error('Failed to fetch JSON:',e));
-            fetch('https://raw.githubusercontent.com/prowebtoons-thief/{0}/main/dtb.webtoon.id.{0}.json'.format(this.title)).then(response=>response.json()).then(json=>this.epsInfo=json);
+            fetch(`https://raw.githubusercontent.com/prowebtoons-thief/${this.title}/main/dtb.webtoon.id.${this.title}.json`).then(r=>r.ok?r.json():Promise.reject(`HTTP error! status: ${r.status}`)).then(j=>this.epsInfo=j).catch(e=>console.error('Failed to fetch JSON:',e));
             // fetch(`./${this.title}.json`).then(r=>r.json()).then(j=>{this.epsInfo=j}).catch(e=>console.error('Failed to fetch JSON:',e));
 
             const get_epsInfo=()=>{
                 retry++;
-                if(retry>999){window.location.search = "";return(this.epsInfo)};
+                if(retry>999){window.location.search = "";return};
                 if(!this.epsInfo){
                     setTimeout(function(){get_epsInfo()},10);
                     return(this.epsInfo)
@@ -338,18 +339,17 @@ const TWA_ProWebtoons = {
                     TWA_ProWebtoons.referer(this.options[this.selectedIndex].value)
                 });
 
-                this.setdescription();
+                this.setDashboard();
                 var episode = this.client.last_view;
 
                 $("meta[name='viewport']").attr('content', "width=device-width,initial-scale=1.0,maximum-scale=2.0,minimum-scale=1.0,user-scalable=yes")
 
-                var lch = this.opt_episode.e[0];
+                var lch = this.opt_episode.e;
                 if(lch.length>1){Array.from(lch.options).slice(1).forEach(elem=>{elem.remove()})};
                 lch.options[0].selected = true;
                 Object.keys(this.epsInfo.epsInfo).sort().forEach(eps=>{
-                    var option=document.createElement("option");
-                    option.value=eps;
-                    option.text="Chapter {0}".format(eps);
+                    var option=$("<option>").attr("value", eps).e;
+                    option.text=this.epsInfo.epsInfo[eps].title;
                     option.rel="nofollow";
                     if(eps==episode){option.selected=true};
                     lch.append(option);
@@ -362,15 +362,17 @@ const TWA_ProWebtoons = {
     }
 };
 
-var pathLength = $('#fixed-tool #progress').width();
 var progress_bar = $('#fixed-tool #progress-bar');
 var updateProgress = function () {
+    var pathLength = $('#fixed-tool #progress').width();
     var scroll = window.scrollY;
     var height = document.body.scrollHeight -window.innerHeight;
+    // console.log(pathLength, scroll, height, pathLength -(pathLength -(scroll *pathLength /height)))
     progress_bar.width(pathLength -(pathLength -(scroll *pathLength /height)))
 }
 updateProgress();
 
+// ['qwe', 'viewed', 'last_view'].forEach(k=>{localStorage.removeItem(`${k}.${''}`)})
 document.addEventListener("DOMContentLoaded", ()=>{
     // (function() {"use strict";})();
     TWA_ProWebtoons.init()
