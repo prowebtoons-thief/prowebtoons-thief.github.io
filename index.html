@@ -41,272 +41,25 @@
         *::-webkit-scrollbar-thumb{background-color:rgb(40 180 20);background:rgb(103 137 63)}
         body{font-size:14px;font-weight:500;background:#1f2029}
 
-
-        #fixed-tool {
-            --black-light: #424455;
-            --width: 36px;
-            --height: var(--width);
-            --font-size: 18px;
-            --translate: calc(var(--width) / 4 * 3);
-            --bg-color-lg: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-            --bg-size: 300% 300%;
-            --animation: animatedgradient 10s ease alternate infinite;
-        }
-
-        #fixed-tool #progress{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0.25em;
-            background: var(--black-light);
-            z-index: 10000;
-        }
-        #fixed-tool #progress-bar{
-            position: relative;
-            left: 0;
-            width: 0%;
-            height: 100%;
-            float: left;
-            background: var(--bg-color-lg);
-            background-size: var(--bg-size);
-            animation: var(--animation);
-            -webkit-transition: all 360ms linear;
-            transition: all 360ms linear;
-        }
-
-        #fixed-tool #list-Episode {
-            position: fixed;
-            top: calc(var(--width) / 2);
-            left: calc(var(--width) / 2);
-            width: var(--width);
-            height: var(--height);
-
-            font-weight: normal;
-            font-size: var(--font-size);
-            cursor: pointer;
-            border-radius: 50%;
-            background: var(--black-light);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translate(calc(-1 * var(--translate)), calc(-1 * var(--translate)));
-            -webkit-transition: all 360ms linear;
-            transition: all 360ms linear;
-        }
-        #fixed-tool #list-Episode.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(0, 0);
-        }
-        #fixed-tool #list-Episode:after {
-            content: '\f00b';
-            text-align: center;
-            font-family: "FontAwesome";
-            line-height: var(--height);
-
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: var(--width);
-            height: var(--height);
-            z-index: 1;
-            inset: 0;
-            background: var(--bg-color-lg);
-            background-size: var(--bg-size);
-            animation: var(--animation);
-
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        #fixed-tool #btn-scroll {
-            position: fixed;
-            top: calc(var(--width) / 2);
-            right: calc(var(--width) / 2);
-        }
-        #fixed-tool #btn-scroll #to-Top,
-        #fixed-tool #btn-scroll #to-Down {
-            width: var(--width);
-            height: var(--height);
-            margin: 2px 0;
-
-            font-weight: normal;
-            font-size: var(--font-size);
-            cursor: pointer;
-            border-radius: 50%;
-            background: var(--black-light);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(calc(-1 * var(--translate)));
-            -webkit-transition: all 360ms linear;
-            transition: all 360ms linear;
-        }
-        #fixed-tool #btn-scroll #to-Down {transform: translateY(var(--translate))}
-        #fixed-tool #btn-scroll #to-Top.active,
-        #fixed-tool #btn-scroll #to-Down.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        #fixed-tool #btn-scroll #to-Top:after,
-        #fixed-tool #btn-scroll #to-Down:after {
-            content: '\f062';
-            text-align: center;
-            font-family: "FontAwesome";
-            line-height: var(--height);
-
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: var(--width);
-            height: var(--height);
-            z-index: 1;
-            inset: 0;
-            background: var(--bg-color-lg);
-            background-size: var(--bg-size);
-            animation: var(--animation);
-
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        #fixed-tool #btn-scroll #to-Down:after {content: '\f063'}
-
-
-        #fixed-tool #footer-bar {
-            position: fixed;
-            right: calc(var(--width) / 2);
-            left: calc(var(--width) / 2);
-            bottom: calc(var(--width) / 2);
-        }
-        #fixed-tool #footer-bar #to-Prev,
-        #fixed-tool #footer-bar #to-Next {
-            width: var(--width);
-            height: var(--height);
-            margin: 0 2px;
-
-            font-weight: normal;
-            font-size: var(--font-size);
-            cursor: pointer;
-            border-radius: 50%;
-            background: var(--black-light);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(calc(-1 * var(--translate)));
-            -webkit-transition: all 360ms linear;
-            transition: all 360ms linear;
-        }
-        #fixed-tool #footer-bar #to-Next {
-            float: right;
-            transform: translateX(var(--translate));
-        }
-        #fixed-tool #footer-bar #to-Prev.active,
-        #fixed-tool #footer-bar #to-Next.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-        }
-        #fixed-tool #footer-bar #to-Prev:after,
-        #fixed-tool #footer-bar #to-Next:after {
-            content: '\f060';
-            text-align: center;
-            font-family: "FontAwesome";
-            line-height: var(--height);
-
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: var(--width);
-            height: var(--height);
-            z-index: 1;
-            inset: 0;
-            background: var(--bg-color-lg);
-            background-size: var(--bg-size);
-            animation: var(--animation);
-
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        #fixed-tool #footer-bar #to-Next:after {content: '\f061'}
-
-        #fixed-tool #footer-bar #opt-Episode {
-            width: 100%;
-            line-height: var(--height);
-            padding: 0 9px;
-
-            display: block;
-            color: #6fba82;
-            font-size: var(--font-size);
-            font-weight: 360;
-            cursor: pointer;
-            border-radius: 25px;
-            background: var(--black-light);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(var(--translate));
-            -webkit-transition: all 360ms linear;
-            transition: all 360ms linear;
-            -webkit-appearance: none;
-        }
-        #fixed-tool #footer-bar #opt-Episode.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        #fixed-tool #footer-bar #opt-Episode option {
-            padding: 9px;
-            color: #07b39b;
-            font-weight: 360;
-        }
-
-        /*select{width:auto;display:block;padding:5px 10px;color:#fff;font-size:18px;text-align:left;font-weight:700;border-radius:25px;cursor:pointer;background:transparent;-webkit-appearance:none}*/
-        /*option{padding:5px;color:#28db18db;font-weight:500;background:#181818}*/
-        
-
-        #description{padding:15px 0 10px}
-        #description p{padding:4px 12px;color:#eee;font-size:12px;text-align:justify}
-        #description ul#bxcl{padding:8px 12px;list-style:none}
-        #description ul#bxcl li{width:100%;float:left}
-        #description ul#bxcl li .bxch{margin:0 0px 4px;padding:4px 6px;font-size:12px;border:2px solid #adadad88;border-radius:6px;overflow:hidden}
-        #description ul#bxcl li .bxch.viewed{opacity:.6666}
-        #description ul#bxcl li .bxch:hover{background:#333;opacity:1}
-        #description ul#bxcl li .bxch span{display:block}
-        #description ul#bxcl li .bxch span.epsTitle{color:rgb(40 180 20);font-size:16px;font-weight:800;border:1px solid transparent}
-        #description ul#bxcl li .bxch span.epsTitle.view:after{content:" *"}
-        #description ul#bxcl li .bxch span.epsDate{font-size:12px;color:#888}
-        #description ul#bxcl li .bxch span.epsDate:before{content:"YMD: "}
-        #description ul#bxcl li .bxch span.hover{width:99%;float:left;color:rgb(40 220 25);border-color:#333;border-bottom-color:rgb(40 220 25)}
-        /*footer{padding:10px 0;position:fixed;z-index:30;width:100%;display:flex;background:rgba(11,11,11,1)var(--bg-footer);background-size:100%;background-position:center;bottom:0px;transition:bottom 0.5s ease-in-out}*/
-        /*footer.down{bottom:-52px}*/
-        /*select{width:auto;display:block;padding:5px 10px;color:#fff;font-size:18px;text-align:left;font-weight:700;border-radius:25px;cursor:pointer;background:transparent;-webkit-appearance:none}*/
-        /*option{padding:5px;color:#28db18db;font-weight:500;background:#181818}*/
-        /*i#list_eps,i#prev_eps,i#next_eps{color:#ddd}*/
-        /*i#prev_eps:hover,i#next_eps:hover{color:#fff;cursor:pointer}*/
-        /*i#prev_eps.disabled,i#next_eps.disabled{cursor:default;color:#444;pointer-events:none}*/
         ul#imageList{padding:0;list-style-type:none;line-height:0;background:var(--bg-ul-images)}
         ul#imageList li{padding:0}
         ul#imageList li img{width:100%;pointer-events:none;opacity:1}
         ul#imageList li img.error{border:0px solid gray;border-width:1px 0;pointer-events:painted;opacity:1}
         ul#imageList li:first-child img.error{border-width:2px 0 1px}
         ul#imageList li:last-child img.error{border-width:1px 0 2px}
-        
-        @keyframes animatedgradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
         @keyframes rotate{100%{transform:rotate(-1turn)}}
         @media only screen and (min-width:730px){html{background:var(--bg-footer) center center / 88.8889% #000115}body{display:none}}
     </style>
+    <link rel="stylesheet" type="text/css" href="./static/fixed-tool.style.css">
+    <link rel="stylesheet" type="text/css" href="./static/dashboard.style.css">
 </head>
 <body>
     <section id="content" style="width:100%;height:100vh;">
-        <section id="fixed-tool">
+        <section id="fixed-tool" style="display:none">
             <div id="progress"><div id="progress-bar"></div></div>
 
-            <div id="list-Episode" onclick="TWA_ProWebtoons.setdescription()"></div>
+            <div id="list-Episode" onclick="TWA_ProWebtoons.setDashboard()"></div>
 
             <div id="btn-scroll">
                 <table>
@@ -321,9 +74,6 @@
                         <th width="1"><div id="to-Prev"></div></th>
                         <th><select id="opt-Episode">
                             <option style="color:#6fba82" disabled selected>Select Chapter</option>
-                            <option value="001">Chapter 001</option>
-                            <option value="002">Chapter 002</option>
-                            <option value="003">Chapter 003</option>
                         </select></th>
                         <th width="1"><div id="to-Next"></div></th>
                     </tr>
@@ -331,7 +81,26 @@
             </div>
         </section>
 
-        <div id="description" style="display:none"></div>
+        <section id="dashboard" style="display:none">
+            <div class="info">
+                <h2 class="genre"></h2>
+                <h1 class="title"></h1>
+                <p class="summary"></p>
+            </div>
+
+            <div class="detail_lst">
+                <!-- <ul id="_listUl">
+                    <li>
+                       <div class="visited">
+                           <span class="chtitle">EPISODE 26</span>
+                           <span class="date">23 Sep 2024</span>
+                           <span class="tx">#123</span>
+                       </div> 
+                    </li>
+                </ul> -->
+            </div>
+        </section>
+
         <center><ul id="imageList"></ul></center>
     </section>
 
