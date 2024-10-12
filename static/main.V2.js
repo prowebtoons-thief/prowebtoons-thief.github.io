@@ -88,7 +88,7 @@ const TWA_ProWebtoons = {
         var ScrollY=window.pageYOffset;
         if(Math.abs(ScrollY-this.lastScrollY)>=10) {
             if(this.scrolling||(scrollY>this.lastScrollY)&&this.fixedTool(1).active)this.fixedTool(1).hide();
-            else if(!this.scrolling&&scrollY<this.lastScrollY&&!this.fixedTool(1).active)this.fixedTool(1).show();
+            // else if(!this.scrolling&&scrollY<this.lastScrollY&&!this.fixedTool(1).active)this.fixedTool(1).show();
             this.lastScrollY=ScrollY
         }
     },
